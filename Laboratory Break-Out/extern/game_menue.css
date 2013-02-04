@@ -1,0 +1,124 @@
+@charset "utf-8";
+/* CSS Document */
+
+#main{
+	width:800px;
+	height:600px;
+	margin:0 auto;
+}
+#menue_bg{
+	width:800px;
+	height:600px;
+	background-image:url(../images/menue_bg.png);
+}
+#button_gamestart{
+	width:212px;
+	height:49px;
+	background-image:url(../images/spiel_button.png);
+	position:relative;
+	top:140px;
+	left:500px;
+}
+#button_store{
+	width:212px;
+	height:49px;
+	background-image:url(../images/store_button.png);
+	position:relative;
+	top:150px;
+	left:500px;
+}
+#button_missionen{
+	width:212px;
+	height:49px;
+	background-image:url(../images/missionen_button.png);
+	position:relative;
+	top:160px;
+	left:500px;
+}
+#button_anleitung{
+	width:212px;
+	height:49px;
+	background-image:url(../images/anleitung_button.png);
+	position:relative;
+	top:170px;
+	left:500px;
+}
+#store{
+	display:none;
+	width:800px;
+	height:600px;
+	background-image:url(../images/bg_game_menue.png);
+}
+#missionen{
+	display:none;
+	width:800px;
+	height:600px;
+	background-image:url(../images/bg_game_menue.png);
+}
+#anleitung{
+	display:none;
+	width:800px;
+	height:600px;
+	background-image:url(../images/bg_game_menue.png);
+}
+#game{
+	display:none;
+	width:800px;
+	height:600px;
+}
+#lbo_schrift{
+	background-image:url(../images/LAB_schrift_menue.gif);
+	position:relative;
+	top:80px;
+	left:100px;
+	height:51px;
+	width:590px;
+}
+.text{
+	top:15px;
+	left:15px;
+	position:relative;
+	width:770px;
+	height:520px;
+	overflow-y:scroll;
+	overflow-x:hidden;
+	font-size:12px;
+	font-family:Verdana, Geneva, sans-serif;
+	color:#FFF;
+}
+
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(184,184,184,0.5); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(15,91,38,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(184,184,184,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(15,91,38,0.4); 
+}
+.table_text{
+	font-size:14px;
+	font-family:Verdana, Geneva, sans-serif;
+	color:#FFF;
+}
+.back{
+	background-image:url(../images/zuerueck.png);
+	width:100px;
+	height:40px;
+	position:relative;
+	top:11px;
+	left:11px;
+}
