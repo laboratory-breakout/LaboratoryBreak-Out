@@ -1,4 +1,3 @@
-
 function erzeugeGegner(){
 	if(anzGegner <= 4 && gegnerGesamtAnz <= gegnerAnzLvl && addGegner == true){
 		gegnerX.push(800 + extraWert);
@@ -8,7 +7,7 @@ function erzeugeGegner(){
 		anzGegner += 1;
 		activeEnemys += 1;
 		gegnerGesamtAnz += 1;
-		extraWert = Math.floor((Math.random()*600)+200);
+		extraWert = Math.floor((Math.random()*600)+200); //und gehts?
 	}else{
 		if(anzGegner == 5){
 			addGegner = false;
