@@ -10,20 +10,31 @@ canvas {
 	z-index:auto;
 	width:800px;
 	height:600px;
-	/*display:none;*/
-	display:block;
+	display:none;
+	/*display:block;*/
 }
 #intro{
 	width:800px;
 	height:600px;
-	display:none;
-    /*display:block;*/
+	/*display:none;*/
+    display:block;
 }
 #seq_geg_1{
 	width:800px;
 	height:600px;
     display:none;
 }
+#toLevel_2{
+	width:800px;
+	height:600px;
+    display:none;
+}
+#toLevel_3{
+	width:800px;
+	height:600px;
+    display:none;
+}
+
 #gameEnde{
 	width:800px;
 	height:600px;

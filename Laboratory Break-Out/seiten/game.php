@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-//include("../inc/dd.php");
+include("../inc/dd.php");
 include("../inc/startup.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -16,30 +16,26 @@ include("../inc/startup.php");
 <script language="javascript" type="text/javascript" src="../extern/game_menue.js"></script>
 
 <link href="../extern/custom-theme/jquery-ui-1.9.2.custom.css" rel="stylesheet">
-<script language="javascript" src="../extern/jquery-1.8.3.js" type="text/javascript"></script>
-<script language="javascript" src="../extern/jquery.js" type="text/javascript"></script>
-<script language="javascript" src="../extern/jquery-ui-1.9.2.custom.js" type="text/javascript"></script>
-
-<script language="javascript" src="../extern/video/jquery.js" type="text/javascript"></script>
-<script language="javascript" src="../extern/game/bibliotheken/jquery.min.js" type="text/javascript"></script>
+<script language="javascript" src="../extern/jquery-new.js" type="text/javascript"></script>
+<script language="javascript" src="../extern/jquery-ui.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/bibliotheken/jquery.hotkeys.js" type="text/javascript"></script>
-<script language="javascript" src="../extern/game/bibliotheken/sprite_animation.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/bibliotheken/key_status.js" type="text/javascript"></script>
+<script language="javascript" src="../extern/game/bibliotheken/sprite_animation.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/bibliotheken/util.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/bibliotheken/sprite.js" type="text/javascript"></script>
-<script language="javascript" src="../extern/game/bibliotheken/sound.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/eigene/levelloader.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/eigene/ki.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/eigene/objects.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/eigene/positions.js" type="text/javascript"></script>
-<script language="javascript" src="../extern/game/eigene/game.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/eigene/gamestart.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/eigene/physics.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/eigene/hittest.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/eigene/hud.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/eigene/ende.js" type="text/javascript"></script>
+<script language="javascript" src="../extern/game/eigene/level.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/video/mediaelement-and-player.min.js" type="text/javascript"></script>
 <script language="javascript" src="../extern/game/eigene/videosequenzen.js" type="text/javascript"></script>
+
 <link rel="stylesheet" type="text/css" href="../extern/game_style.css" />
 
 <link rel="shortcut icon" href="../images/favicon.ico" />
@@ -74,13 +70,76 @@ include("../inc/startup.php");
         <div id="main">
         	<div id="menue_bg">
             	<div id="lbo_schrift"></div>
-                <div id="button_gamestart" onmouseover="game_start_hover(this);" onmouseout="game_start_out(this);" onclick="game_starten();"></div>
-                <div id="button_store" onmouseover="store_hover(this);" onmouseout="store_out(this);" onclick="store_oeffnen();"></div>
-                <div id="button_missionen" onmouseover="missionen_hover(this);" onmouseout="missionen_out(this);"  onclick="missionen_oeffnen();"></div>
-                <div id="button_anleitung" onmouseover="anleitung_hover(this);" onmouseout="anleitung_out(this);"  onclick="anleitung_oeffnen();"></div>
+                <div id="gameMenue">
+                    <div id="button_gamestart" onmouseover="game_start_hover(this);" onmouseout="game_start_out(this);" onclick="game_starten();"></div>
+                    <div id="button_store" onmouseover="store_hover(this);" onmouseout="store_out(this);" onclick="store_oeffnen();"></div>
+                    <div id="button_missionen" onmouseover="missionen_hover(this);" onmouseout="missionen_out(this);"  onclick="missionen_oeffnen();"></div>
+                    <div id="button_anleitung" onmouseover="anleitung_hover(this);" onmouseout="anleitung_out(this);"  onclick="anleitung_oeffnen();"></div>
+                </div>
+
+                <div id="login">
+                    	<h2>Login</h2>
+                        <form method="POST" action="game.php" name="login">
+                        <table>
+                           	<tr>
+                            	<td>
+                                	Benutzername:
+                                </td>
+                                <td>
+                                	<input type="text" name="username" class="feld"/>
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td>
+                                	Passwort:
+                                </td>
+                                <td>
+                                	<input type="password" name="passwort" class="feld"/>
+                                </td>
+                            </tr>  
+                            <tr>
+                            	<td colspan="2" style="text-align:center">
+                                	<input type="submit" name="login" value="Login" />
+                                    <input type="reset" name="reset" value="Reset" />
+
+                                </td>                            
+                            </tr>  
+                            <tr>
+                            	<td colspan="2" style="text-align:center">
+                                	oder
+                                </td>
+                   
+                            </tr>
+                            <tr>
+                            	<td colspan="2" style="text-align:center">
+                        </form>
+                        <form method="POST" action="registrieren.php">
+                                	<input type="submit" name="registrieren" value="Registrieren" />
+                                </td>
+                            </tr>
+                        </table>
+                        </form>
+
+
+ <?php
+		$usr = $_POST['username'];
+		$pwd = $_POST['passwort'];
+		//$pwd = md5($pwd);
+	    if(isset($usr) && isset($pwd)){
+		$user = $DB -> GetAll ('select user_id, username, passwort from user where username = ?', array($usr));
+       if($user[0]["username"]==$usr && $user[0]["passwort"]==$pwd){
+		   $user_id=$user[0]["user_id"];
+		   echo "<script>document.getElementById('login').style.display = 'none';
+				document.getElementById('gameMenue').style.display ='block';</script>";
+	   }else{
+ 		   echo "<center id='loginfehlgeschlagen'>Login fehlgeschlagen!</center>";
+	   }   	
+	   }
+?>
+    </div>
             </div>
+            
 <?php
-$user_id = 1;
 $store = $DB -> GetAll ('select * from store');
 $multi = $DB -> GetRow('select multiplikator from user where user_id=?', array($user_id));
 $multiplikator=implode(",", $multi);
@@ -89,17 +148,6 @@ $vorhandene_muenzen=$muenzen_anz['muenzen'];
 $punkte_anz = $DB -> GetRow ('select punkte from user where user_id=?', array($user_id));
 $vorhandene_punkte=$punkte_anz['punkte'];
 
-//Für Missionen:
-$SMG_Munition_kaufen = false;
-$Feature1_kaufen = false;
-$Sturmgewehr_Munition_kaufen = false;
-$Sturmgewehr_kaufen = false;
-$Feature2_kaufen = false;
-$MG_Munition_kaufen = false;
-$MG_kaufen = false;
-$Feature3_kaufen = false;
-$Praezi_Munition_kaufen = false;
-$Praezi_kaufen = false;
 ?>
 
             <div id="game">
@@ -125,14 +173,28 @@ $Praezi_kaufen = false;
 		<div id="spiel">
         </div>
  		<div id="intro">
-    		<video width="800" height="600" id="intro_player">
-				<source src="../video/seq1.mp4" id="mp4" type="video/mp4" title="mp4">
-				<source src="../video/seq1.webm" id="webm" type="video/webm" title="webm">
-				<source src="../video/seq1.ogv" id="ogg" type="video/ogg" title="ogg">
+    		<video src="../video/Intro/intro.mp4" width="800" height="600" id="intro_player">
+				<source src="../video/Intro/intro.mp4" id="mp4" type="video/mp4" title="mp4">
+				<source src="../video/Intro/intro.webm" id="webm" type="video/webm" title="webm">
+				<source src="../video/Intro/intro.ogv" id="ogg" type="video/ogg" title="ogg">
 			</video>
  	   </div>
+       <div id="toLevel_2">
+    		<video src="../video/ToLevel2/toLevel2.mp4" width="800" height="600" id="seq_toLevel_2">
+				<source src="../video/ToLevel2/toLevel2.mp4" id="mp4" type="video/mp4" title="mp4">
+				<source src="../video/ToLevel2/toLevel2.webm" id="webm" type="video/webm" title="webm">
+				<source src="../video/ToLevel2/toLevel2.ogv" id="ogg" type="video/ogg" title="ogg">
+			</video>
+  	   </div>
+       <div id="toLevel_3">
+    		<video src="../video/ToLevel3/toLevel3.mp4" width="800" height="600" id="seq_toLevel_3">
+				<source src="../video/ToLevel3/toLevel3.mp4" id="mp4" type="video/mp4" title="mp4">
+				<source src="../video/ToLevel3/toLevel3.webm" id="webm" type="video/webm" title="webm">
+				<source src="../video/ToLevel3/toLevel3.ogv" id="ogg" type="video/ogg" title="ogg">
+			</video>
+  	   </div>
    	   <div id="seq_geg_1">
-    		<video width="800" height="600" id="seq_geg_1_player">
+    		<video src="../video/seq2.mp4" width="800" height="600" id="seq_geg_1_player">
 				<source src="../video/seq2.mp4" id="mp4" type="video/mp4" title="mp4">
 				<source src="../video/seq2.webm" id="webm" type="video/webm" title="webm">
 				<source src="../video/seq2.ogv" id="ogg" type="video/ogg" title="ogg">
@@ -178,14 +240,14 @@ var gegnerY = new Array();
 var gegnerRichtung = new Array();
 var gegnerSpeed = 5;
 var x_muenzen = new Array();
+var y_muenzen = new Array();
 var x_huerden_unten = new Array();
 var x_huerden_oben = new Array();
 var figur, boden, huerde_oben, huerde_boden, muenze, gegner, waffe, kugel; 
 var canvasElement = $("<canvas width='" + CANVAS_WIDTH + "' height='" + CANVAS_HEIGHT + "'></canvas");
 var canvas = canvasElement.get(0).getContext("2d");
-var speed_pos=5;
-var speed_neg=5;
-var levelspeed=10;
+var levelspeed_pos=7;
+var levelspeed_neg=7;
 var boden_pixel=515;
 var MuenzenAnzahl = 0;
 var PunkteAnzahl = 0;
@@ -225,22 +287,47 @@ var endgegner_zerstoeren=false;
 var vorhandeneWaffen = new Array();
 var Multiplikator;
 	    <?php
+			$index=0;
 		for($i=0; $i<12 ;$i++){
 			if(isset($storeJS[$i])){
 		?>
-		   vorhandeneWaffen["<?php echo $i; ?>"]=new Object();
-		   vorhandeneWaffen["<?php echo $i; ?>"]["id"]="<?php echo $storeJS[$i]['id'];?>";
-		   vorhandeneWaffen["<?php echo $i; ?>"]["ausruestung"]="<?php echo $storeJS[$i]['ausruestung'];?>";
-		   vorhandeneWaffen["<?php echo $i; ?>"]["anzahl"]="<?php echo $storeJS[$i]['anzahl'];?>";			   
+		   vorhandeneWaffen["<?php echo $index; ?>"]=new Object();
+		   vorhandeneWaffen["<?php echo $index; ?>"]["id"]="<?php echo $storeJS[$i]['id'];?>";
+		   vorhandeneWaffen["<?php echo $index; ?>"]["ausruestung"]="<?php echo $storeJS[$i]['ausruestung'];?>";
+		   vorhandeneWaffen["<?php echo $index; ?>"]["anzahl"]="<?php echo $storeJS[$i]['anzahl'];?>";			   
 		<?php
+				$index+=1;
 			}
 		}
 		?>
 		Multiplikator="<?php echo $multiplikator; ?>";
 		var muenzen="<?php echo $vorhandene_muenzen;?>";
 		var punkte="<?php echo $vorhandene_punkte;?>";
-
- 		game();
+ 		
+var LevelEinsAbsolviert = false;	
+var LevelZweiAbsolviert = false;	
+var LevelDreiAbsolviert = false;	
+var LevelText ="";
+	
+		createObjects();
+    	createPositions();
+		
+		canvasElement.appendTo('#spiel');
+		canvasElement.mousemove(function(e) {
+            _mouseX = e.pageX;
+			_mouseY = e.pageY;
+        });
+		$("canvas").click(function(ev) {
+			createNewBullet();
+			shot = false;
+		});
+		
+				
+		function createNewBullet(){
+			kugelnX.push(figur.x+70);
+			kugelnY.push(figur.y+7);
+		   
+		}
 		
 		$('canvas').keyup(function(event){
 		if(event.keyCode == 81){
@@ -273,23 +360,25 @@ var Multiplikator;
 		  
 		  updateBullets();
 		  updateGegner();
-		 
+		 	
 		  figur.x = figur.x.clamp(0, CANVAS_WIDTH - figur.width);
-		  
         }
 		
         function draw() {
           canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		  canvas.fillStyle = "#FFF";
 		  canvas.font = '20pt Arial';
-		  canvas.strokeStyle = 'white';
- 		  canvas.lineWidth = 1;
+		  canvas.strokeStyle = 'lightgreen';
+ 		  canvas.lineWidth = 1.5;
 		  
-  		  canvas.strokeText("x "+MuenzenAnzahl, 553, 33);
-		  canvas.strokeText("Punkte: "+PunkteAnzahl, 290, 33);
-		  canvas.strokeText(Zeit, 730, 33);
-          
+  		  canvas.strokeText("x "+MuenzenAnzahl, 567, 45);
+		  canvas.strokeText("Punkte: "+PunkteAnzahl, 330, 45);
+		  canvas.strokeText(Zeit, 730, 45);
+		  		
+				
 		  boden.draw();
+		  canvas.strokeText("LEVEL "+LevelText, 660, 590);
+          
 		  figur.draw();
 		  huerde_boden.draw();
 		  huerde_oben.draw();
@@ -326,8 +415,8 @@ var Multiplikator;
 			}
 		};
 		muenze.draw = function () {
-			for ( var i=0; i<=500; i++){
-			this.sprite.draw(canvas, x_muenzen[i], this.y);
+			for ( var i=0; i<=200; i++){
+			this.sprite.draw(canvas, x_muenzen[i], y_muenzen[i]);
 			}
 		};
 		
@@ -465,61 +554,6 @@ if(isset($_POST['erreichtePunkte'])){
 			}
 		}
 	}
-
-//Missionen überprüfen:
-	if(isset($id_return)){
-		if($id_return==6){
-			$SMG_Munition_kaufen = true;
-		}else{
-			$SMG_Munition_kaufen = false;
-		}
-		if($id_return==10){
-			$Feature1_kaufen = true;
-		}else{
-			$Feature1_kaufen = false;
-		}
-		if($id_return==7){
-			$Sturmgewehr_Munition_kaufen = true;
-		}else{
-			$Sturmgewehr_Munition_kaufen = false;
-		}
-		if($id_return==3){
-			$Sturmgewehr_kaufen = true;
-		}else{
-			$Sturmgewehr_kaufen = false;
-		}
-		if($id_return==11){
-			$Feature2_kaufen = true;
-		}else{
-			$Feature2_kaufen = false;
-		}
-		if($id_return==8){
-			$MG_Munition_kaufen = true;
-		}else{
-			$MG_Munition_kaufen = false;
-		}
-		if($id_return==4){
-			$MG_kaufen = true;
-		}else{
-			$MG_kaufen = false;
-		}
-		if($id_return==12){
-			$Feature3_kaufen = true;
-		}else{
-			$Feature3_kaufen = false;
-		}
-		if($id_return==9){
-			$Praezi_Munition_kaufen = true;
-		}else{
-			$Praezi_Munition_kaufen = false;
-		}
-		if($id_return==5){
-			$Praezi_kaufen = true;
-		}else{
-			$Praezi_kaufen = false;
-		}
-	}	
-	
 ?>
 
                     <table class="table_text">
@@ -538,7 +572,7 @@ if(isset($_POST['erreichtePunkte'])){
 	for($count=1; $count<=sizeof($store); $count++){
 		$hat = $DB -> GetRow ('select fk_store_id from hat where fk_store_id='.$count.' AND fk_user_id=?', array($user_id));
 		$store_id = $DB -> GetRow ('select store_id from store where store_id='.$count.'');
-		$anzahl = $DB ->GetRow('select anzahl from hat where fk_store_id='.$count.'');
+		$anzahl = $DB ->GetRow('select anzahl from hat where fk_store_id='.$count.'AND fk_user_id=?', array($user_id));
 		if(isset($hat['fk_store_id'])){
 			if($hat['fk_store_id']==$store_id['store_id']){
 				$gekauft=true;
@@ -564,12 +598,418 @@ if(isset($_POST['erreichtePunkte'])){
                 </div>
             </div>
 <?php
-//MISSIONEN Insert:
-if(isset($_POST['hundertMuenzen'])|| isset($_POST['zwanzigGegner'])|| isset($_POST['level2'])|| isset($SMG_Munition_kaufen)|| isset($Feature1_kaufen)|| isset($_POST['zweihundertMuenzen'])|| isset($Sturmgewehr_Munition_kaufen)|| isset($Sturmgewehr_kaufen)|| isset($Feature2_kaufen)|| isset($_POST['fuenfzigGegner'])|| isset($_POST['fuenfhundertMuenzen'])|| isset($_POST['level3'])|| isset($MG_Munition_kaufen)|| isset($_POST['einhundertGegner'])|| isset($MG_kaufen)|| isset($_POST['endgegner_zerstoeren'])|| isset($Feature3_kaufen)|| isset($Praezi_Munition_kaufen)|| isset($Praezi_kaufen)){
-	if($_POST['hundertMuenzen'] == true){
-	//	echo "<script>alert('es ist');</script>";
-	}
+//Missionen überprüfen und INSERT:
+$checkErledigt=0;
+$schonInDB;
+$hatBereitsErledigt = $DB -> GetAll ('select fk_missionen_id from hat_erledigt where fk_user_id=?', array($user_id));
+	if(isset($id_return)){
+		if($id_return==2){
+			$checkErledigt=5;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+		if($id_return==6){
+			$checkErledigt=3;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+		if($id_return==10){
+			$checkErledigt=6;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+		if($id_return==7){
+			$checkErledigt=8;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+		if($id_return==3){
+			$checkErledigt=9;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+		if($id_return==11){
+			$checkErledigt=10;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+		if($id_return==8){
+			$checkErledigt=14;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+		if($id_return==4){
+			$checkErledigt=4;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+		if($id_return==12){
+			$checkErledigt=18;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+		if($id_return==9){
+			$checkErledigt=19;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+		if($id_return==5){
+			$checkErledigt=20;
+			for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+		}
+	}	
 
+if(isset($_POST['hundertMuenzen'])|| isset($_POST['zwanzigGegner'])|| isset($_POST['level2']) || isset($_POST['zweihundertMuenzen'])|| isset($_POST['fuenfzigGegner'])|| isset($_POST['fuenfhundertMuenzen'])|| isset($_POST['level3']) || isset($_POST['einhundertGegner'])|| isset($_POST['endgegner_zerstoeren'])){
+	
+	if($_POST['hundertMuenzen'] == true){
+		$checkErledigt=1;
+		for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+			if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+			}	
+		}
+		if($schonInDB == false){
+			$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   			$ret = mysql_query ($query)	or die (mysql_error());	
+			
+			$multiplikator = $multiplikator + 0.05;
+			$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+			$ret = mysql_query ($query) or die (mysql_error());
+		}
+	}
+	
+	if($_POST['zwanzigGegner'] == true){
+	   $checkErledigt=2;
+	   for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+	}
+	if($_POST['level2'] == true){
+	   $checkErledigt=4;
+	   for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+	}
+	if($_POST['zweihundertMuenzen'] == true){
+	   $checkErledigt=7;
+	}
+	if($_POST['fuenfzigGegner'] == true){
+	   $checkErledigt=11;
+	   for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+	}
+	if($_POST['fuenfhundertMuenzen'] == true){
+	   $checkErledigt=12;
+	   for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+	}
+	if($_POST['level3'] == true){
+	   $checkErledigt=13;
+	   for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+	}
+	if($_POST['einhundertGegner'] == true){
+	   $checkErledigt=15;
+	   for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+	}
+	if($_POST['endgegner_zerstoeren'] == true){
+	   $checkErledigt=17;
+	   for($j=0; $j<=sizeof($hatBereitsErledigt); $j++){
+				if(isset($hatBereitsErledigt[$j]['fk_missionen_id'])){
+					if($hatBereitsErledigt[$j]['fk_missionen_id']==$checkErledigt){
+						$schonInDB=true;
+						break;
+			        }else{
+						$schonInDB=false;
+					}
+				}	
+			}
+			if($schonInDB == false){
+				$query = "INSERT INTO `hat_erledigt` (`fk_user_id` ,`fk_missionen_id`) VALUES ('$user_id' , '$checkErledigt');";
+   				$ret = mysql_query ($query)	or die (mysql_error());	
+			
+				$multiplikator = $multiplikator + 0.05;
+				$query = "UPDATE user SET multiplikator='$multiplikator' WHERE user_id='$user_id'";
+				$ret = mysql_query ($query) or die (mysql_error());
+			}
+	}
 }
 
 ?>

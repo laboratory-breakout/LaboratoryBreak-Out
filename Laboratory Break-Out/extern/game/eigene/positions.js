@@ -1,8 +1,16 @@
 function createPositions(){
 	
 	x_muenzen[0]=muenze.x;
-		for (var j=1; j<=500; j++){
+	y_muenzen[0]=muenze.y;
+
+		for (var j=1; j<=200; j++){
 			x_muenzen[j]=x_muenzen[j-1]+Math.floor((Math.random()*120)+40);
+			var posYMuenze=Math.floor((Math.random()*2)+1);
+			if(posYMuenze == 1){
+				y_muenzen[j]=411;
+			}else{
+				y_muenzen[j]=266;
+			}
 		}
 		
 	

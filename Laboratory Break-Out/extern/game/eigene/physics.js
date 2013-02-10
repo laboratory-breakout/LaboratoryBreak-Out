@@ -23,8 +23,8 @@ function jump() {
 							if(jumpCounter > -200){}else{
 								jumping = false;
 							}
-						levelloader_jump();
 					}else{
+						levelloader_jump();
 						fallen_bool = true;
 					}
 					
@@ -45,20 +45,18 @@ function fallen(){
 			figur.y += 8;
 			waffe.y = figur.y+5;
 		}
-		levelloader_jump();	
+		levelloader_jump();
 	}
 }
 function runLeft(){
-			figur.x -= speed_neg;
-			speed_pos=5;
 			waffe.x = figur.x+5;
+			levelspeed_pos=10;
 			levelloader_links();
 }
 
 function runRight(){
-			figur.x += speed_pos;
-			speed_neg=5;
 			waffe.x = figur.x+7;
+			levelspeed_neg=10;
 			levelloader_rechts();
 }
 		

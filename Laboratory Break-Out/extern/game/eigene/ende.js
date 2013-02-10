@@ -1,6 +1,7 @@
 function spielende(){
 	clearInterval(intervalZeit);
 	clearInterval(intervalSpiel);
+	clearInterval(interval2);
 	//Ändern auf letzte Sequenz
 	
 	document.getElementById("spiel").style.display="none";

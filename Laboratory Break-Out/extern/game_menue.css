@@ -122,3 +122,23 @@
 	top:11px;
 	left:11px;
 }
+#gameMenue{
+	display:none;
+}
+#login{
+	height:226px;
+	width:245px;
+	left:500px;
+	top:150px;
+	position:relative;
+	background-image:url(../images/login_bg.png);
+	padding-top:5px;
+	padding-left:7px;
+	background-repeat:no-repeat;
+}
+#loginfehlgeschlagen{
+	color:#F00;
+}
+.feld{
+	width:120px;
+}

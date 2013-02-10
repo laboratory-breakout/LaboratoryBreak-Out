@@ -1,7 +1,7 @@
 function createObjects(){
 	  figur = {
 			color: "#00A",
-			x: 50,
+			x: 400,
 			y: 515,
 			width: 20,
 			height: 30,
@@ -49,7 +49,7 @@ function createObjects(){
 		muenze = {
 				color: "#00A",
 				x: 600,
-				y: 415,
+				y: 411,
 				width: 35,
 				height: 35,
 				draw: function() {
@@ -97,8 +97,8 @@ function createObjects(){
 		
 		muenzeIcon = {
 				color: "#00A",
-				x: 520,
-				y: 8,
+				x: 531,
+				y: 20,
 				width: 28,
 				height: 28,
 				draw: function() {

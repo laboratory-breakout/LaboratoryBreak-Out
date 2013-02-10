@@ -1,13 +1,14 @@
+
 function erzeugeGegner(){
 	if(anzGegner <= 4 && gegnerGesamtAnz <= gegnerAnzLvl && addGegner == true){
 		gegnerX.push(800 + extraWert);
-		console.log(gegnerX);
+		//console.log(gegnerX);
 		gegnerY.push(515);
 		gegnerRichtung.push(-1);
 		anzGegner += 1;
 		activeEnemys += 1;
 		gegnerGesamtAnz += 1;
-		extraWert = Math.floor((Math.random()*600)+200); //und gehts?
+		extraWert = Math.floor((Math.random()*600)+200);
 	}else{
 		if(anzGegner == 5){
 			addGegner = false;
