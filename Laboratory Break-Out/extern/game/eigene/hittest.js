@@ -29,6 +29,16 @@ function hitHuerdeBoden_jump(zahl){
   	if (collides(figur, huerde_boden)) {
 		if(figur.y>=415){
 		  figur.y=415;
+		  fallen_bool=true;
+		  levelspeed_pos=10;
+		  levelspeed_pos=10;
+		}
+	}
+}
+function hitHuerdeBoden_fallen(zahl){
+	if(figur.y>=415){
+  	if (collides(figur, huerde_boden)) {
+		  figur.y=415;
 		  jumpPressed = false;
 		  jumping = true;
 		  jumpCounter = 0;
@@ -36,7 +46,7 @@ function hitHuerdeBoden_jump(zahl){
 		  fallen_bool=true;
 		  levelspeed_pos=10;
 		  levelspeed_pos=10;
-		}
+	}
 	}
 }
 function hitHuerdeOben_rechts(zahl){
@@ -52,6 +62,28 @@ function hitHuerdeOben_links(zahl){
 	}
 }
 function hitHuerdeOben_jump(zahl){
+	 if (collides(figur, huerde_oben)) {
+  	 if(figur.y>=347){
+		  jumpPressed = false;
+		  jumping = false;
+		  jumpCounter = 0;
+		  jumpDone = false;
+		  levelspeed_pos=10;
+		  levelspeed_pos=10;
+		  fallen_bool=true;
+		 }else{
+		  figur.y=271;
+		  jumpPressed = false;
+		  jumping = true;
+		  jumpCounter = 0;
+		  jumpDone = false;
+		  levelspeed_pos=10;
+		  levelspeed_pos=10;
+		  fallen_bool=true;
+	  	}
+	}
+}
+function hitHuerdeOben_fallen(zahl){
 	 if (collides(figur, huerde_oben)) {
   	 if(figur.y>=347){
 		  jumpPressed = false;

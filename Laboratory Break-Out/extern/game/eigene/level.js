@@ -1,12 +1,10 @@
 function EinLevelWeiter(zahl){
-	if(zahl==20){
-		if(x_muenzen[20] <= -100){
+	if(zahl==200){
+		if(x_muenzen[200] <= -100){
 			if(LevelEinsAbsolviert == true){
 				clearInterval(intervalZeit);
 				clearInterval(intervalSpiel);
 				clearInterval(interval2);
-				document.getElementById("spiel").style.display="none";
-				document.getElementById("toLevel_2").style.display="block";
 				SeqEndeLevelEins();	
 			}
 			if(LevelZweiAbsolviert == true){

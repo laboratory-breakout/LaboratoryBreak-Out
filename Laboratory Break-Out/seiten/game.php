@@ -1,7 +1,9 @@
 <?php
 error_reporting(0);
+session_start();
 include("../inc/dd.php");
 include("../inc/startup.php");
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -77,16 +79,19 @@ include("../inc/startup.php");
                     <div id="button_anleitung" onmouseover="anleitung_hover(this);" onmouseout="anleitung_out(this);"  onclick="anleitung_oeffnen();"></div>
                 </div>
 
-                <div id="login">
+<?php
+	if($_SESSION['login'] == false){
+		echo "
+                <div id='login'>
                     	<h2>Login</h2>
-                        <form method="POST" action="game.php" name="login">
+                        <form method='POST' action='game.php' name='login'>
                         <table>
                            	<tr>
                             	<td>
                                 	Benutzername:
                                 </td>
                                 <td>
-                                	<input type="text" name="username" class="feld"/>
+                                	<input type='text' name='username' class='feld'/>
                                 </td>
                             </tr>
                             <tr>
@@ -94,45 +99,55 @@ include("../inc/startup.php");
                                 	Passwort:
                                 </td>
                                 <td>
-                                	<input type="password" name="passwort" class="feld"/>
+                                	<input type='password' name='passwort' class='feld'/>
                                 </td>
                             </tr>  
                             <tr>
-                            	<td colspan="2" style="text-align:center">
-                                	<input type="submit" name="login" value="Login" />
-                                    <input type="reset" name="reset" value="Reset" />
+                            	<td colspan='2' style='text-align:center'>
+                                	<input type='submit' name='login' value='Login' />
+                                    <input type='reset' name='reset' value='Reset' />
 
                                 </td>                            
                             </tr>  
                             <tr>
-                            	<td colspan="2" style="text-align:center">
+                            	<td colspan='2' style='text-align:center'>
                                 	oder
                                 </td>
                    
                             </tr>
                             <tr>
-                            	<td colspan="2" style="text-align:center">
+                            	<td colspan='2' style='text-align:center'>
                         </form>
-                        <form method="POST" action="registrieren.php">
-                                	<input type="submit" name="registrieren" value="Registrieren" />
+                        <form method='POST' action='registrieren.php'>
+                                	<input type='submit' name='registrieren' value='Registrieren' />
                                 </td>
                             </tr>
                         </table>
                         </form>
 
-
+		";
+	}else{
+		echo "<script>document.getElementById('login').style.display = 'none';
+				document.getElementById('gameMenue').style.display ='block';</script>";
+	}
+?>
  <?php
+ 	echo "<script>alert(".$_SESSION['login'].");</script>";
 		$usr = $_POST['username'];
 		$pwd = $_POST['passwort'];
 		//$pwd = md5($pwd);
 	    if(isset($usr) && isset($pwd)){
 		$user = $DB -> GetAll ('select user_id, username, passwort from user where username = ?', array($usr));
        if($user[0]["username"]==$usr && $user[0]["passwort"]==$pwd){
+		   $_SESSION['username']=$usr;
 		   $user_id=$user[0]["user_id"];
+		   $_SESSION['userId']=$user_id;
+		   $_SESSION['login'] = false;
 		   echo "<script>document.getElementById('login').style.display = 'none';
 				document.getElementById('gameMenue').style.display ='block';</script>";
 	   }else{
  		   echo "<center id='loginfehlgeschlagen'>Login fehlgeschlagen!</center>";
+		   $_SESSION['login'] = true;
 	   }   	
 	   }
 ?>
@@ -140,6 +155,7 @@ include("../inc/startup.php");
             </div>
             
 <?php
+$user_id=$_SESSION['userId'];
 $store = $DB -> GetAll ('select * from store');
 $multi = $DB -> GetRow('select multiplikator from user where user_id=?', array($user_id));
 $multiplikator=implode(",", $multi);
@@ -173,28 +189,28 @@ $vorhandene_punkte=$punkte_anz['punkte'];
 		<div id="spiel">
         </div>
  		<div id="intro">
-    		<video src="../video/Intro/intro.mp4" width="800" height="600" id="intro_player">
+    		<video width="800" height="600" id="intro_player"  preload="auto" controls="controls">
 				<source src="../video/Intro/intro.mp4" id="mp4" type="video/mp4" title="mp4">
 				<source src="../video/Intro/intro.webm" id="webm" type="video/webm" title="webm">
 				<source src="../video/Intro/intro.ogv" id="ogg" type="video/ogg" title="ogg">
 			</video>
  	   </div>
        <div id="toLevel_2">
-    		<video src="../video/ToLevel2/toLevel2.mp4" width="800" height="600" id="seq_toLevel_2">
-				<source src="../video/ToLevel2/toLevel2.mp4" id="mp4" type="video/mp4" title="mp4">
-				<source src="../video/ToLevel2/toLevel2.webm" id="webm" type="video/webm" title="webm">
-				<source src="../video/ToLevel2/toLevel2.ogv" id="ogg" type="video/ogg" title="ogg">
+    		<video width="800" height="600" id="seq_toLevel_2"  preload="auto" controls="controls">
+				<source src="../video/ToLevel2/toLevel.mp4" id="mp4" type="video/mp4" title="mp4">
+				<source src="../video/ToLevel2/toLevel.webm" id="webm" type="video/webm" title="webm">
+				<source src="../video/ToLevel2/toLevel.ogv" id="ogg" type="video/ogg" title="ogg">
 			</video>
   	   </div>
        <div id="toLevel_3">
-    		<video src="../video/ToLevel3/toLevel3.mp4" width="800" height="600" id="seq_toLevel_3">
+    		<video width="800" height="600" id="seq_toLevel_3"  preload="auto" controls="controls">
 				<source src="../video/ToLevel3/toLevel3.mp4" id="mp4" type="video/mp4" title="mp4">
 				<source src="../video/ToLevel3/toLevel3.webm" id="webm" type="video/webm" title="webm">
 				<source src="../video/ToLevel3/toLevel3.ogv" id="ogg" type="video/ogg" title="ogg">
 			</video>
   	   </div>
    	   <div id="seq_geg_1">
-    		<video src="../video/seq2.mp4" width="800" height="600" id="seq_geg_1_player">
+    		<video width="800" height="600" id="seq_geg_1_player"  preload="auto" controls="controls">
 				<source src="../video/seq2.mp4" id="mp4" type="video/mp4" title="mp4">
 				<source src="../video/seq2.webm" id="webm" type="video/webm" title="webm">
 				<source src="../video/seq2.ogv" id="ogg" type="video/ogg" title="ogg">
@@ -220,6 +236,8 @@ $vorhandene_punkte=$punkte_anz['punkte'];
     </div>
   </div>
 <script>
+$("video").removeAttr('controls');
+
 var CANVAS_WIDTH = 800;
 var CANVAS_HEIGHT = 600;
 var FPS = 30;
@@ -267,12 +285,14 @@ var activeEnemys = 0;
 var extraWert = 0;
 var tester = 10;
 var waffenIndex = 0;
+var bulletDrop = 3;
 		
 var gegnerSpringt = new Array();
 var gegnerJumpCounter = 0;
 var gegnerFaellt = false;
 		
 var toteFeinde=0;
+var leben = 5;
 
 var hundertMuenzen=true;
 var zwanzigGegner=false;
@@ -285,6 +305,7 @@ var einhundertGegner=false;
 var endgegner_zerstoeren=false;
 
 var vorhandeneWaffen = new Array();
+var waffen = new Array();
 var Multiplikator;
 	    <?php
 			$index=0;
@@ -317,31 +338,109 @@ var LevelText ="";
             _mouseX = e.pageX;
 			_mouseY = e.pageY;
         });
+		
+		function createNewBullet(){
+			//if waffe .. und je nach waffe woanders erzeugen
+			
+			//pistole
+			
+			if(waffen[waffenIndex][0] == 1){
+				kugelnX.push(figur.x+155);
+				kugelnY.push(figur.y+75);
+			}else if(waffen[waffenIndex][0] == 2){
+				//für smg bestimmen
+			}else if(waffen[waffenIndex][0] == 3){
+				//für stg bestimmen
+			}else if(waffen[waffenIndex][0] == 4){
+
+				kugelnX.push(figur.x+240);
+				kugelnY.push(figur.y+60);
+			}else if(waffen[waffenIndex][0] == 5){
+				//für sniper bestimmen
+			}
+		}
+		
 		$("canvas").click(function(ev) {
-			createNewBullet();
-			shot = false;
+			if(waffen[waffenIndex][1] > 0){
+				createNewBullet();
+				waffen[waffenIndex][1] -= 1;
+				shot = false;	
+			}
+			if(waffenIndex == 0){
+				createNewBullet();
+				waffen[waffenIndex][1] -= 1;
+				shot = false;
+			}
+			
 		});
 		
 				
-		function createNewBullet(){
-			kugelnX.push(figur.x+70);
-			kugelnY.push(figur.y+7);
-		   
-		}
+
+		welcheWaffenWievielMunition();
 		
-		$('canvas').keyup(function(event){
-		if(event.keyCode == 81){
-				//naechste waffe
-				if(waffenIndex == (waffenArray.length-1)){
+		$('body').keyup(function(event){
+			if(event.keyCode == 81){
+				//console.log(waffenIndex);
+				if(waffenIndex == (waffen.length-1)){
 					waffenIndex = 0;
-				}
-				else{
+				}else{
 					waffenIndex += 1;
 				}
-				var tmp = "player"+waffenIndex;
+				for(var i = 0; i < waffen.length; i++){
+					//console.log(waffen[i]);
+				}
+				//console.log("player"+waffen[waffenIndex]);
+				var tmp = "Charakter/spieler"+waffen[waffenIndex][0];
+				if(waffen[waffenIndex][0] == 1){
+					bulletDrop = 0.2;
+				}else if(waffen[waffenIndex][0] == 2){
+					bulletDrop = 0;
+				}else if(waffen[waffenIndex][0] == 3){
+					bulletDrop = 0;
+				}else if(waffen[waffenIndex][0] == 4){
+					bulletDrop = 0;
+				}else if(waffen[waffenIndex][0] == 5){
+					bulletDrop = 0;
+				}
 				figur.sprite = Sprite(tmp);
 			}
 		});
+		
+		function welcheWaffenWievielMunition(){
+			var tmpZaehler = 0;
+			for(var i = 0; i < vorhandeneWaffen.length; i++){
+				var tmp1 = vorhandeneWaffen[i]["id"];
+				var tmp2 = parseInt(tmp1);
+				if(tmp2 >= 1 && tmp2 <= 5){
+					waffen[i] = new Object();
+					waffen[tmpZaehler][0] = tmp2;
+					tmpZaehler += 1;
+				}
+				if(tmp2 >= 6 && tmp2 <= 9){
+					for(var j = 0; j < waffen.length; j++){
+						if(waffen[j][0] == 2 && tmp2 == 6){
+							var tmpSMG = vorhandeneWaffen[i]["anzahl"];
+							waffen[j][1] = parseInt(tmpSMG);
+						}
+						if(waffen[j][0] == 3 && tmp2 == 7){
+							var tmpStg = vorhandeneWaffen[i]["anzahl"];
+							waffen[j][1] = parseInt(tmpStg);
+						}
+						if(waffen[j][0] == 4 && tmp2 == 8){
+							var tmpLMG = vorhandeneWaffen[i]["anzahl"];
+							waffen[j][1] = parseInt(tmpLMG);
+						}
+						if(waffen[j][0] == 5 && tmp2 == 9){
+							var tmpSniper = vorhandeneWaffen[i]["anzahl"];
+							waffen[j][1] = parseInt(tmpSniper);
+						}
+						
+					}
+					
+				}
+			}
+		}
+			
 			
         function update() {
 
@@ -374,22 +473,29 @@ var LevelText ="";
   		  canvas.strokeText("x "+MuenzenAnzahl, 567, 45);
 		  canvas.strokeText("Punkte: "+PunkteAnzahl, 330, 45);
 		  canvas.strokeText(Zeit, 730, 45);
-		  		
+		    		
 				
 		  boden.draw();
 		  canvas.strokeText("LEVEL "+LevelText, 660, 590);
-          
+          canvas.strokeText(aktuelleMuni() + " Schuss", 10, 590);
+		  
 		  figur.draw();
 		  huerde_boden.draw();
 		  huerde_oben.draw();
 		  muenze.draw();
-		  waffe.draw();
 		  kugel.draw();
 		  gegner.draw();
 		  muenzeIcon.draw();
+		  lebensanzeige.draw();
         }
 		
-        
+        function aktuelleMuni(){
+			if(waffenIndex == 0){
+				return "∞";
+			}else{
+				return waffen[waffenIndex][1];
+			}
+		}
 		
         figur.draw = function() {
         	this.sprite.draw(canvas, this.x, this.y);
@@ -420,7 +526,7 @@ var LevelText ="";
 			}
 		};
 		
-		waffe.draw = function () {
+		lebensanzeige.draw = function() {
 			this.sprite.draw(canvas, this.x, this.y);
 		};
 		

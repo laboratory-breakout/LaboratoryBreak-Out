@@ -1,5 +1,5 @@
 function gamestart(){
-
+	
 		intervalSpiel=setInterval(function() {
 		  jump();
 		  fallen();
@@ -10,4 +10,6 @@ function gamestart(){
 		
 	  	intervalZeit=setInterval("time()",t2);
 		interval2 = setInterval("time2()", t4);
+		
+		
 }

@@ -60,3 +60,24 @@ function levelloader_jump(){
 			}
 			
 }
+function levelloader_fallen(){
+	 if(figur.x >= 0){
+				for(var i=0; i<=20; i++){
+					x_huerden_unten[i]=x_huerden_unten[i];
+					huerde_boden.x=x_huerden_unten[i];
+					hitHuerdeBoden_fallen(i);
+				}
+				for(var i=0; i<=80; i++){
+					x_huerden_oben[i]=x_huerden_oben[i];
+					huerde_oben.x=x_huerden_oben[i];
+					hitHuerdeOben_fallen(i);
+				}
+				for(var i=0; i<=200; i++){
+					x_muenzen[i]=x_muenzen[i];
+					muenze.x=x_muenzen[i];
+					muenze.y=y_muenzen[i];
+					hitMuenze(i);
+				}
+			}
+			
+}

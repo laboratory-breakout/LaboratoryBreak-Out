@@ -27,3 +27,11 @@ function time2(){
 		tester += 10;
 	}
 }
+
+function vonGegnerBeruehrt(){
+	leben -= 1;
+	lebensanzeige.sprite = Sprite("Lebensanzeige/lebensanzeige_" + leben);
+	if(leben == 0){
+		//endGame
+	}
+}

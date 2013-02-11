@@ -2,7 +2,7 @@ function createObjects(){
 	  figur = {
 			color: "#00A",
 			x: 400,
-			y: 515,
+			y: 435,
 			width: 20,
 			height: 30,
 			draw: function() {
@@ -58,17 +58,6 @@ function createObjects(){
 				}
 		};
 		
-		waffe = {
-			color: "#00A",
-			x: figur.x+5,
-			y: figur.y+5,
-			width: 77,
-			height: 20,
-			draw: function(){
-				canvas.fillStyle = this.color;
-				canvas.fillRect(this.x, this.y, this.width, this.height);
-			}
-		};
 		
 		kugel = {
 			color: "#00A",
@@ -107,14 +96,24 @@ function createObjects(){
 				}
 		};
 		
-		figur.sprite = Sprite("player");
+		lebensanzeige = {
+			color: "#00A",
+			x: 30,
+			y: 8,
+			width: 200,
+			height: 30,
+			draw: function(){
+				canvas.fillStyle = this.color;
+				canvas.fillRect(this.x, this.y, this.width, this.height);
+			}
+		};
+		figur.sprite = Sprite("Charakter/spieler1");
 		boden.sprite = Sprite("boden");
 		huerde_boden.sprite = Sprite("Huerde_Unten");
 		huerde_oben.sprite = Sprite("Huerde_Oben");
 		muenze.sprite = Sprite("muenze");
-		waffe.sprite = Sprite("waffe_test_small");
 		kugel.sprite = Sprite("bullet");
 		gegner.sprite = Sprite("enemy1");
 		muenzeIcon.sprite = Sprite("muenzeIcon");
-		
+		lebensanzeige.sprite = Sprite("Lebensanzeige/lebensanzeige_" + leben);
 }

@@ -29,9 +29,7 @@ function game_starten(){
 	document.getElementById('menue_bg').style.display="none";
 	
 	document.getElementById('game').style.display="block";	
-	//startLevelEins();
 	intro();
-	//Auf INTRO ändern
 }
 function store_oeffnen(){
 	document.getElementById('menue_bg').style.display="none";
