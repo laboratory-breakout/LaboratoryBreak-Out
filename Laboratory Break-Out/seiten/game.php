@@ -79,8 +79,26 @@ include("../inc/startup.php");
                     <div id="button_anleitung" onmouseover="anleitung_hover(this);" onmouseout="anleitung_out(this);"  onclick="anleitung_oeffnen();"></div>
                 </div>
 
+ <?php
+		$usr = $_POST['username'];
+		$pwd = $_POST['passwort'];
+		//$pwd = md5($pwd);
+	    if(isset($usr) && isset($pwd)){
+		$user = $DB -> GetAll ('select user_id, username, passwort from user where username = ?', array($usr));
+       if($user[0]["username"]==$usr && $user[0]["passwort"]==$pwd){
+		   $user_id=$user[0]["user_id"];
+		   $_SESSION['id']=$user_id;
+		   echo "<script>if(document.getElementById('login').style.display == 'block'){
+			   	document.getElementById('login').style.display == 'none';
+				document.getElementById('gameMenue').style.display ='block';
+		   }</script>";
+	   }else{
+ 		   echo "<center id='loginfehlgeschlagen'>Login fehlgeschlagen!</center>";
+	   }   	
+	   }
+?>
 <?php
-	if($_SESSION['login'] == false){
+	if(isset($_SESSION['id'])==false){
 		echo "
                 <div id='login'>
                     	<h2>Login</h2>
@@ -100,6 +118,7 @@ include("../inc/startup.php");
                                 </td>
                                 <td>
                                 	<input type='password' name='passwort' class='feld'/>
+									<input type='hidden' name='id' class='feld'/>
                                 </td>
                             </tr>  
                             <tr>
@@ -124,38 +143,17 @@ include("../inc/startup.php");
                             </tr>
                         </table>
                         </form>
+				</div>
 
 		";
 	}else{
-		echo "<script>document.getElementById('login').style.display = 'none';
-				document.getElementById('gameMenue').style.display ='block';</script>";
+		 echo "<script>document.getElementById('gameMenue').style.display ='block';</script>";
 	}
 ?>
- <?php
- 	echo "<script>alert(".$_SESSION['login'].");</script>";
-		$usr = $_POST['username'];
-		$pwd = $_POST['passwort'];
-		//$pwd = md5($pwd);
-	    if(isset($usr) && isset($pwd)){
-		$user = $DB -> GetAll ('select user_id, username, passwort from user where username = ?', array($usr));
-       if($user[0]["username"]==$usr && $user[0]["passwort"]==$pwd){
-		   $_SESSION['username']=$usr;
-		   $user_id=$user[0]["user_id"];
-		   $_SESSION['userId']=$user_id;
-		   $_SESSION['login'] = false;
-		   echo "<script>document.getElementById('login').style.display = 'none';
-				document.getElementById('gameMenue').style.display ='block';</script>";
-	   }else{
- 		   echo "<center id='loginfehlgeschlagen'>Login fehlgeschlagen!</center>";
-		   $_SESSION['login'] = true;
-	   }   	
-	   }
-?>
-    </div>
             </div>
             
 <?php
-$user_id=$_SESSION['userId'];
+$user_id =  $_SESSION['id'];
 $store = $DB -> GetAll ('select * from store');
 $multi = $DB -> GetRow('select multiplikator from user where user_id=?', array($user_id));
 $multiplikator=implode(",", $multi);
@@ -231,6 +229,10 @@ $vorhandene_punkte=$punkte_anz['punkte'];
             <input type="hidden" name="endgegner_zerstoeren" id="endgegner_zerstoeren"/>
             <input type="hidden" name="erreichteMuenzen" id="erreichteMuenzen"/>
             <input type="hidden" name="erreichtePunkte" id="erreichtePunkte"/>
+            <input type="hidden" name="neueMunitionSMG" id="neueMunitionSMG"/>
+            <input type="hidden" name="neueMunitionSTG" id="neueMunitionSTG"/>
+            <input type="hidden" name="neueMunitionMG" id="neueMunitionMG"/>
+            <input type="hidden" name="neueMunitionPRE" id="neueMunitionPRE"/>
             <input type="submit" id="endeButton" value="" />
         </form>
     </div>
@@ -294,7 +296,7 @@ var gegnerFaellt = false;
 var toteFeinde=0;
 var leben = 5;
 
-var hundertMuenzen=true;
+var hundertMuenzen=false;
 var zwanzigGegner=false;
 var level2=false;
 var zweihundertMuenzen=false;
@@ -329,6 +331,8 @@ var LevelEinsAbsolviert = false;
 var LevelZweiAbsolviert = false;	
 var LevelDreiAbsolviert = false;	
 var LevelText ="";
+
+var beruehrt_unten;
 	
 		createObjects();
     	createPositions();
@@ -338,73 +342,6 @@ var LevelText ="";
             _mouseX = e.pageX;
 			_mouseY = e.pageY;
         });
-		
-		function createNewBullet(){
-			//if waffe .. und je nach waffe woanders erzeugen
-			
-			//pistole
-			
-			if(waffen[waffenIndex][0] == 1){
-				kugelnX.push(figur.x+155);
-				kugelnY.push(figur.y+75);
-			}else if(waffen[waffenIndex][0] == 2){
-				//für smg bestimmen
-			}else if(waffen[waffenIndex][0] == 3){
-				//für stg bestimmen
-			}else if(waffen[waffenIndex][0] == 4){
-
-				kugelnX.push(figur.x+240);
-				kugelnY.push(figur.y+60);
-			}else if(waffen[waffenIndex][0] == 5){
-				//für sniper bestimmen
-			}
-		}
-		
-		$("canvas").click(function(ev) {
-			if(waffen[waffenIndex][1] > 0){
-				createNewBullet();
-				waffen[waffenIndex][1] -= 1;
-				shot = false;	
-			}
-			if(waffenIndex == 0){
-				createNewBullet();
-				waffen[waffenIndex][1] -= 1;
-				shot = false;
-			}
-			
-		});
-		
-				
-
-		welcheWaffenWievielMunition();
-		
-		$('body').keyup(function(event){
-			if(event.keyCode == 81){
-				//console.log(waffenIndex);
-				if(waffenIndex == (waffen.length-1)){
-					waffenIndex = 0;
-				}else{
-					waffenIndex += 1;
-				}
-				for(var i = 0; i < waffen.length; i++){
-					//console.log(waffen[i]);
-				}
-				//console.log("player"+waffen[waffenIndex]);
-				var tmp = "Charakter/spieler"+waffen[waffenIndex][0];
-				if(waffen[waffenIndex][0] == 1){
-					bulletDrop = 0.2;
-				}else if(waffen[waffenIndex][0] == 2){
-					bulletDrop = 0;
-				}else if(waffen[waffenIndex][0] == 3){
-					bulletDrop = 0;
-				}else if(waffen[waffenIndex][0] == 4){
-					bulletDrop = 0;
-				}else if(waffen[waffenIndex][0] == 5){
-					bulletDrop = 0;
-				}
-				figur.sprite = Sprite(tmp);
-			}
-		});
 		
 		function welcheWaffenWievielMunition(){
 			var tmpZaehler = 0;
@@ -440,8 +377,70 @@ var LevelText ="";
 				}
 			}
 		}
+		
+		$("canvas").click(function(ev) {
+			if(waffen[waffenIndex][1] > 0){
+				createNewBullet();
+				waffen[waffenIndex][1] -= 1;
+				shot = false;	
+			}
+			if(waffenIndex == 0){
+				createNewBullet();
+				waffen[waffenIndex][1] -= 1;
+				shot = false;
+			}
 			
+		});
+		
+		
+		$('body').keyup(function(event){
+			if(event.keyCode == 81){
+				//console.log(waffenIndex);
+				if(waffenIndex == (waffen.length-1)){
+					waffenIndex = 0;
+				}else{
+					waffenIndex += 1;
+				}
+				for(var i = 0; i < waffen.length; i++){
+					//console.log(waffen[i]);
+				}
+				//console.log("player"+waffen[waffenIndex]);
+				var tmp = "Charakter/spieler"+waffen[waffenIndex][0];
+				if(waffen[waffenIndex][0] == 1){
+					bulletDrop = 0.2;
+				}else if(waffen[waffenIndex][0] == 2){
+					bulletDrop = 0;
+				}else if(waffen[waffenIndex][0] == 3){
+					bulletDrop = 0;
+				}else if(waffen[waffenIndex][0] == 4){
+					bulletDrop = 0;
+				}else if(waffen[waffenIndex][0] == 5){
+					bulletDrop = 0;
+				}
+				figur.sprite = Sprite(tmp);
+			}
+		});
+		
+		function createNewBullet(){
+			//if waffe .. und je nach waffe woanders erzeugen
 			
+			//pistole
+			
+			if(waffen[waffenIndex][0] == 1){
+				kugelnX.push(figur.x+155);
+				kugelnY.push(figur.y+75);
+			}else if(waffen[waffenIndex][0] == 2){
+				//für smg bestimmen
+			}else if(waffen[waffenIndex][0] == 3){
+				//für stg bestimmen
+			}else if(waffen[waffenIndex][0] == 4){
+
+				kugelnX.push(figur.x+240);
+				kugelnY.push(figur.y+60);
+			}else if(waffen[waffenIndex][0] == 5){
+				//für sniper bestimmen
+			}
+		}	
         function update() {
 
           if(keydown.left || keydown.a) {
@@ -510,18 +509,18 @@ var LevelText ="";
 		};
 		
 		huerde_boden.draw = function() {
-        	for ( var i=0; i<=20; i++){
+        	for ( var i=0; i<=200; i++){
 			this.sprite.draw(canvas, x_huerden_unten[i], this.y);
 			}
         };
 		
 		huerde_oben.draw = function() {
-        	for( var i=0; i<=80; i++){
+        	for( var i=0; i<=260; i++){
 			this.sprite.draw(canvas, x_huerden_oben[i], this.y);
 			}
 		};
 		muenze.draw = function () {
-			for ( var i=0; i<=200; i++){
+			for ( var i=0; i<=600; i++){
 			this.sprite.draw(canvas, x_muenzen[i], y_muenzen[i]);
 			}
 		};
@@ -548,6 +547,7 @@ var LevelText ="";
 </script>
      
 <?php
+
 if(isset($_POST['erreichteMuenzen'])){
 		$muenzen_neu2 = $_POST['erreichteMuenzen'];
 		$query = "UPDATE user SET muenzen='$muenzen_neu2' WHERE user_id='$user_id'";
@@ -556,6 +556,26 @@ if(isset($_POST['erreichteMuenzen'])){
 if(isset($_POST['erreichtePunkte'])){
 		$punkte_neu2 = $_POST['erreichtePunkte'];
 		$query = "UPDATE user SET punkte='$punkte_neu2' WHERE user_id='$user_id'";
+		$ret = mysql_query ($query) or die (mysql_error());
+}
+if(isset($_POST['neueMunitionSMG'])){
+		$Muni_SMG = $_POST['neueMunitionSMG'];
+		$query = "UPDATE hat SET anzahl='$Muni_SMG' WHERE fk_store_id='6' and fk_user_id='$user_id'";
+		$ret = mysql_query ($query) or die (mysql_error());
+}
+if(isset($_POST['neueMunitionSTG'])){
+		$Muni_STG = $_POST['neueMunitionSTG'];
+		$query = "UPDATE hat SET anzahl='$Muni_STG' WHERE fk_store_id='7' and fk_user_id='$user_id'";
+		$ret = mysql_query ($query) or die (mysql_error());
+}
+if(isset($_POST['neueMunitionMG'])){
+		$Muni_MG = $_POST['neueMunitionMG'];
+		$query = "UPDATE hat SET anzahl='$Muni_MG' WHERE fk_store_id='8' and fk_user_id='$user_id'";
+		$ret = mysql_query ($query) or die (mysql_error());
+}
+if(isset($_POST['neueMunitionPRE'])){
+		$Muni_PRE = $_POST['neueMunitionPRE'];
+		$query = "UPDATE hat SET anzahl='$Muni_PRE' WHERE fk_store_id='9' and fk_user_id='$user_id'";
 		$ret = mysql_query ($query) or die (mysql_error());
 }
 ?>
@@ -674,11 +694,11 @@ if(isset($_POST['erreichtePunkte'])){
 	$kaufen_button="../images/kaufen.png";
 	$gekauft;
 	$gekauft_bild;	
-	
 	for($count=1; $count<=sizeof($store); $count++){
 		$hat = $DB -> GetRow ('select fk_store_id from hat where fk_store_id='.$count.' AND fk_user_id=?', array($user_id));
 		$store_id = $DB -> GetRow ('select store_id from store where store_id='.$count.'');
-		$anzahl = $DB ->GetRow('select anzahl from hat where fk_store_id='.$count.'AND fk_user_id=?', array($user_id));
+		$anzahl = $DB ->GetRow('select anzahl from hat where fk_store_id='.$count.' AND fk_user_id=?', array($user_id));
+
 		if(isset($hat['fk_store_id'])){
 			if($hat['fk_store_id']==$store_id['store_id']){
 				$gekauft=true;

@@ -3,8 +3,8 @@ function createObjects(){
 			color: "#00A",
 			x: 400,
 			y: 435,
-			width: 20,
-			height: 30,
+			width: 80,
+			height: 112,
 			draw: function() {
 				canvas.fillStyle = this.color;
 				canvas.fillRect(this.x, this.y, this.width, this.height);
@@ -28,7 +28,7 @@ function createObjects(){
 			x: 500,
 			y: 445,
 			width: 80,
-			height: 100,
+			height: 10,
 			draw: function() {
 				canvas.fillStyle = this.color;
 				canvas.fillRect(this.x, this.y, this.width, this.height);
@@ -37,7 +37,7 @@ function createObjects(){
 		huerde_oben = {
 			color: "#00A",
 			x: 600,
-			y: 300,
+			y: 250,
 			width: 80,
 			height: 50,
 			draw: function() {
@@ -49,7 +49,7 @@ function createObjects(){
 		muenze = {
 				color: "#00A",
 				x: 600,
-				y: 411,
+				y: 400,
 				width: 35,
 				height: 35,
 				draw: function() {

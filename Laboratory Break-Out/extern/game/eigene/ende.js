@@ -11,8 +11,29 @@ function spielende(){
 	
 	var neueMuenzen = parseInt(muenzen)+parseInt(MuenzenAnzahl);
 	var neuePunkte = parseInt(punkte)+parseInt(PunkteAnzahl);
+	
+	if(MuenzenAnzahl >= 100){
+		hundertMuenzen = true;
+	}
+	if(MuenzenAnzahl >= 200){
+		zweihundertMuenzen = true;
+	}
+	if(MuenzenAnzahl >= 500){
+		fuenfhundertMuenzen = true;
+	}
+	if(toteFeinde >= 50){
+		fuenfzigGegner = true;
+	}
+	if(toteFeinde >= 100){
+		einhundertGegner = true;
+	}
+
 	document.getElementById('erreichteMuenzen').value=neueMuenzen;
 	document.getElementById('erreichtePunkte').value=neuePunkte;
+	document.getElementById('neueMunitionSMG').value=waffen[1][1];
+	document.getElementById('neueMunitionSTG').value=waffen[2][1];
+	document.getElementById('neueMunitionMG').value=waffen[3][1];
+	document.getElementById('neueMunitionPRE').value=waffen[4][1];
 	document.getElementById('hundertMuenzen').value=hundertMuenzen;
 	document.getElementById('level2').value=level2;
 	document.getElementById('zweihundertMuenzen').value=zweihundertMuenzen;

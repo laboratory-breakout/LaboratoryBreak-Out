@@ -16,18 +16,28 @@ function jump() {
 				if(jumpDone == true){
 					jumpPressed = false;
 				}else{
+			
 					if(jumping == true){
-							figur.y -= 8;
-							jumpCounter -= 8;
-							if(jumpCounter > -200){}else{
+						figur.y -= 8;
+						jumpCounter -= 8;
+						if(jumpCounter > -210){}else{
 								jumping = false;
-							}
-					}else{
+						}
+					 if(figur.y <= 40){
+						jumpPressed = false;
+						jumping = true;
+						jumpCounter = 0;
+						jumpDone = false;
+						fallen_bool=true;
+						levelspeed_neg=10;
+						levelspeed_pos=10;	
+					}
 						levelloader_jump();
+						
+					}else{
 						fallen_bool = true;
 					}
-					
-				}
+				  }
 			}
 }
 
@@ -41,7 +51,7 @@ function fallen(){
 			jumpDone = false;
 			fallen_bool = false;
 		}else{
-			figur.y += 8;
+			figur.y += 12;
 		}
 		levelloader_fallen();
 	}
