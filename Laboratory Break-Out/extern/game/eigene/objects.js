@@ -28,7 +28,7 @@ function createObjects(){
 			x: 500,
 			y: 445,
 			width: 80,
-			height: 10,
+			height: 100,
 			draw: function() {
 				canvas.fillStyle = this.color;
 				canvas.fillRect(this.x, this.y, this.width, this.height);
@@ -59,25 +59,119 @@ function createObjects(){
 		};
 		
 		
-		kugel = {
+		kugel1 = {
 			color: "#00A",
-			x: figur.x+70,
-			y: figur.y+7,
-			width: 15,
-			height: 15,
-			speed: 15,
+			x: 0,
+			y: 0,
+			width: 5,
+			height: 5,
+			speed: 10,
+			damage: 0,
 			draw: function(){
 				canvas.fillStyle = this.color;
 				canvas.fillRect(this.x, this.y, this.width, this.height);
 			}
-		}
+		};
 		
-		gegner = {
+		kugel2 = {
+			color: "#00A",
+			x: 0,
+			y: 0,
+			width: 5,
+			height: 5,
+			speed: 13,
+			damage: 0,
+			draw: function(){
+				canvas.fillStyle = this.color;
+				canvas.fillRect(this.x, this.y, this.width, this.height);
+			}
+		};
+		
+		kugel3 = {
+			color: "#00A",
+			x: 0,
+			y: 0,
+			width: 5,
+			height: 5,
+			speed: 15,
+			damage: 0,
+			draw: function(){
+				canvas.fillStyle = this.color;
+				canvas.fillRect(this.x, this.y, this.width, this.height);
+			}
+		};
+		
+		kugel4 = {
+			color: "#00A",
+			x: 0,
+			y: 0,
+			width: 5,
+			height: 5,
+			speed: 15,
+			damage: 0,
+			draw: function(){
+				canvas.fillStyle = this.color;
+				canvas.fillRect(this.x, this.y, this.width, this.height);
+			}
+		};
+		
+		kugel5 = {
+			color: "#00A",
+			x: 0,
+			y: 0,
+			width: 5,
+			height: 5,
+			speed: 20,
+			damage: 0,
+			draw: function(){
+				canvas.fillStyle = this.color;
+				canvas.fillRect(this.x, this.y, this.width, this.height);
+			}
+		};
+		
+		gegnerRatte = {
 			color: "#00A",
 			x: 700,
 			y: 515,
-			width: 20,
-			height: 30,
+			width: 121,
+			height: 29,
+			draw: function() {
+				canvas.fillStyle = this.color;
+				canvas.fillRect(this.x, this.y, this.width, this.height);
+			}
+		};
+		
+		gegnerKaefer = {
+			color: "#00A",
+			x: 700,
+			y: 435,
+			width: 42,
+			height: 115,
+			draw: function() {
+				canvas.fillStyle = this.color;
+				canvas.fillRect(this.x, this.y, this.width, this.height);
+			}
+		};
+		
+		gegnerDoktor = {
+			color: "#00A",
+			x: 700,
+			y: 435,
+			width: 25,
+			height: 110,
+			draw: function() {
+				canvas.fillStyle = this.color;
+				canvas.fillRect(this.x, this.y, this.width, this.height);
+			}
+		};
+		
+		bossgegner = {
+			color: "#00A",
+			x: 700,
+			y: 515,
+			width: 130,
+			height: 169,
+			speed: 5,
 			draw: function() {
 				canvas.fillStyle = this.color;
 				canvas.fillRect(this.x, this.y, this.width, this.height);
@@ -100,20 +194,27 @@ function createObjects(){
 			color: "#00A",
 			x: 30,
 			y: 8,
-			width: 200,
-			height: 30,
+			width: 266,
+			height: 38,
 			draw: function(){
 				canvas.fillStyle = this.color;
 				canvas.fillRect(this.x, this.y, this.width, this.height);
 			}
 		};
-		figur.sprite = Sprite("Charakter/spieler1");
+		figur.sprite = Sprite("Charakter/spieler1_1");
 		boden.sprite = Sprite("boden");
 		huerde_boden.sprite = Sprite("Huerde_Unten");
 		huerde_oben.sprite = Sprite("Huerde_Oben");
 		muenze.sprite = Sprite("muenze");
-		kugel.sprite = Sprite("bullet");
-		gegner.sprite = Sprite("enemy1");
+		kugel1.sprite = Sprite("bullet1");
+		kugel2.sprite = Sprite("bullet2");
+		kugel3.sprite = Sprite("bullet3");
+		kugel4.sprite = Sprite("bullet4");
+		kugel5.sprite = Sprite("bullet5");
+		gegnerRatte.sprite = Sprite("enemy1");
+		gegnerKaefer.sprite = Sprite("enemy2");
+		gegnerDoktor.sprite = Sprite("enemy3");
+		bossgegner.sprite = Sprite("boss");
 		muenzeIcon.sprite = Sprite("muenzeIcon");
 		lebensanzeige.sprite = Sprite("Lebensanzeige/lebensanzeige_" + leben);
 }

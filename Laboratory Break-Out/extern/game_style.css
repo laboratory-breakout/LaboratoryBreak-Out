@@ -63,3 +63,10 @@ canvas {
 	top:190px;
 	left:35px;	
 }
+#skip_button{
+	background-image:url(../images/skip_button.png);
+	width:108px;
+	height:25px;
+	position:relative;
+	left:690px;
+}

@@ -41,7 +41,7 @@ include("../inc/startup.php");
 <link rel="stylesheet" type="text/css" href="../extern/game_style.css" />
 
 <link rel="shortcut icon" href="../images/favicon.ico" />
-<title>Laboratory Break-Out</title>
+<title>Laboratory Break-Out - Das Spiel</title>
 </head>
 
 <body>
@@ -192,7 +192,9 @@ $vorhandene_punkte=$punkte_anz['punkte'];
 				<source src="../video/Intro/intro.webm" id="webm" type="video/webm" title="webm">
 				<source src="../video/Intro/intro.ogv" id="ogg" type="video/ogg" title="ogg">
 			</video>
+            <div id="skip_button"></div>
  	   </div>
+       
        <div id="toLevel_2">
     		<video width="800" height="600" id="seq_toLevel_2"  preload="auto" controls="controls">
 				<source src="../video/ToLevel2/toLevel.mp4" id="mp4" type="video/mp4" title="mp4">
@@ -253,12 +255,33 @@ var rateOfFire = 1; //Muss noch realisert werden --> Zeit die zwischen den Schue
 var weaponAngle;
 var shootingDelay = rateOfFire;
 var shot = true;
-var kugelnX = new Array();
-var kugelnY = new Array();
-var gegnerX = new Array();
-var gegnerY = new Array();
-var gegnerRichtung = new Array();
-var gegnerSpeed = 5;
+var kugeln1X = new Array();
+var kugeln2X = new Array();
+var kugeln3X = new Array();
+var kugeln4X = new Array();
+var kugeln5X = new Array();
+var kugeln1Y = new Array();
+var kugeln2Y = new Array();
+var kugeln3Y = new Array();
+var kugeln4Y = new Array();
+var kugeln5Y = new Array();
+var gegnerRX = new Array();
+var gegnerRY = new Array();
+var gegnerKX = new Array();
+var gegnerKY = new Array();
+var gegnerDX = new Array();
+var gegnerDY = new Array();
+var endbossX = 0;
+var endbossY = 0;
+var endbossRichtung = 1;
+var gegnerRichtungR = new Array();
+var gegnerRichtungK = new Array();
+var gegnerRichtungD = new Array();
+var bossActive = false;
+var gegnerSpeedR = 5;
+var gegnerSpeedK = 5;
+var gegnerSpeedD = 5;
+var wave = 0;
 var x_muenzen = new Array();
 var y_muenzen = new Array();
 var x_huerden_unten = new Array();
@@ -275,10 +298,13 @@ var Zeit = 0;
 var intervalZeit;
 var intervalSpiel;
 var interval2;
+var intervalAnimation;
 var t=10;
 var t2=10;
 var t3=10;
 var t4=10;
+var t5=10;
+var t6=10;
 var anzGegner = 0;
 var addGegner = false;
 var gegnerAnzLvl = 40; //lvl 1 = 40 | lvl 2 = 60 | lvl 3 = 70
@@ -288,6 +314,7 @@ var extraWert = 0;
 var tester = 10;
 var waffenIndex = 0;
 var bulletDrop = 3;
+var animationCounter = 1;
 		
 var gegnerSpringt = new Array();
 var gegnerJumpCounter = 0;
@@ -332,7 +359,7 @@ var LevelZweiAbsolviert = false;
 var LevelDreiAbsolviert = false;	
 var LevelText ="";
 
-var beruehrt_unten;
+var getroffen = false;
 	
 		createObjects();
     	createPositions();
@@ -395,7 +422,6 @@ var beruehrt_unten;
 		
 		$('body').keyup(function(event){
 			if(event.keyCode == 81){
-				//console.log(waffenIndex);
 				if(waffenIndex == (waffen.length-1)){
 					waffenIndex = 0;
 				}else{
@@ -405,7 +431,7 @@ var beruehrt_unten;
 					//console.log(waffen[i]);
 				}
 				//console.log("player"+waffen[waffenIndex]);
-				var tmp = "Charakter/spieler"+waffen[waffenIndex][0];
+				var tmp = "Charakter/spieler"+waffen[waffenIndex][0]+"_"+animationCounter;
 				if(waffen[waffenIndex][0] == 1){
 					bulletDrop = 0.2;
 				}else if(waffen[waffenIndex][0] == 2){
@@ -420,27 +446,26 @@ var beruehrt_unten;
 				figur.sprite = Sprite(tmp);
 			}
 		});
-		
+				
 		function createNewBullet(){
-			//if waffe .. und je nach waffe woanders erzeugen
-			
-			//pistole
-			
 			if(waffen[waffenIndex][0] == 1){
-				kugelnX.push(figur.x+155);
-				kugelnY.push(figur.y+75);
+				kugeln1X.push(figur.x+70);
+				kugeln1Y.push(figur.y+35);
 			}else if(waffen[waffenIndex][0] == 2){
-				//für smg bestimmen
+				kugeln2X.push(figur.x+65);
+				kugeln2Y.push(figur.y+35);
 			}else if(waffen[waffenIndex][0] == 3){
-				//für stg bestimmen
+				kugeln3X.push(figur.x+105);
+				kugeln3Y.push(figur.y+28);
 			}else if(waffen[waffenIndex][0] == 4){
-
-				kugelnX.push(figur.x+240);
-				kugelnY.push(figur.y+60);
+				kugeln4X.push(figur.x+115);
+				kugeln4Y.push(figur.y+28);
 			}else if(waffen[waffenIndex][0] == 5){
-				//für sniper bestimmen
+				kugeln5X.push(figur.x+120);
+				kugeln5Y.push(figur.y+28);
 			}
 		}	
+		
         function update() {
 
           if(keydown.left || keydown.a) {
@@ -458,7 +483,7 @@ var beruehrt_unten;
 		  
 		  updateBullets();
 		  updateGegner();
-		 	
+		  
 		  figur.x = figur.x.clamp(0, CANVAS_WIDTH - figur.width);
         }
 		
@@ -482,8 +507,15 @@ var beruehrt_unten;
 		  huerde_boden.draw();
 		  huerde_oben.draw();
 		  muenze.draw();
-		  kugel.draw();
-		  gegner.draw();
+		  kugel1.draw();
+		  kugel2.draw();
+		  kugel3.draw();
+		  kugel4.draw();
+		  kugel5.draw();
+		  gegnerRatte.draw();
+		  gegnerKaefer.draw();
+		  gegnerDoktor.draw();
+		  bossgegner.draw();
 		  muenzeIcon.draw();
 		  lebensanzeige.draw();
         }
@@ -491,8 +523,13 @@ var beruehrt_unten;
         function aktuelleMuni(){
 			if(waffenIndex == 0){
 				return "∞";
-			}else{
-				return waffen[waffenIndex][1];
+			}else{ 
+				if(!waffen[waffenIndex][1]){
+					return "0";
+					
+				}else{
+					return waffen[waffenIndex][1];
+				}
 			}
 		}
 		
@@ -510,13 +547,16 @@ var beruehrt_unten;
 		
 		huerde_boden.draw = function() {
         	for ( var i=0; i<=200; i++){
-			this.sprite.draw(canvas, x_huerden_unten[i], this.y);
+				this.sprite.draw(canvas, x_huerden_unten[i], this.y);
+				huerde_boden.x=x_huerden_unten[i];
+				hitKugelHuerdeBoden(i)
 			}
         };
 		
 		huerde_oben.draw = function() {
         	for( var i=0; i<=260; i++){
-			this.sprite.draw(canvas, x_huerden_oben[i], this.y);
+				this.sprite.draw(canvas, x_huerden_oben[i], this.y);
+				hitKugelHuerdeOben(i);
 			}
 		};
 		muenze.draw = function () {
@@ -529,19 +569,65 @@ var beruehrt_unten;
 			this.sprite.draw(canvas, this.x, this.y);
 		};
 		
-		kugel.draw = function () {
-			for(var i = 0; i < kugelnX.length; i++){
-				this.sprite.draw(canvas, kugelnX[i], kugelnY[i]);
+		kugel1.draw = function () {
+			for(var i = 0; i < kugeln1X.length; i++){
+				this.sprite.draw(canvas, kugeln1X[i], kugeln1Y[i]);
 			}
-			
 		};
 		
-		gegner.draw = function () {
-			if(/*activeEnemys > 0 && */isNaN(gegnerX[0]) == false){
-				for(var l = 0; l <= gegnerX.length; l++){
-					this.sprite.draw(canvas, gegnerX[l], gegnerY[l]);
+		kugel2.draw = function () {
+			for(var i = 0; i < kugeln2X.length; i++){
+				this.sprite.draw(canvas, kugeln2X[i], kugeln2Y[i]);
+			}
+		};
+		
+		kugel3.draw = function () {
+			for(var i = 0; i < kugeln3X.length; i++){
+				this.sprite.draw(canvas, kugeln3X[i], kugeln3Y[i]);
+			}
+		};
+		
+		kugel4.draw = function () {
+			for(var i = 0; i < kugeln4X.length; i++){
+				this.sprite.draw(canvas, kugeln4X[i], kugeln4Y[i]);
+			}
+		};
+		
+		kugel5.draw = function () {
+			for(var i = 0; i < kugeln5X.length; i++){
+				this.sprite.draw(canvas, kugeln5X[i], kugeln5Y[i]);
+			}
+		};
+		
+		gegnerRatte.draw = function () {
+			if(/*activeEnemys > 0 && */isNaN(gegnerRX[0]) == false){
+				for(var l = 0; l <= gegnerRX.length; l++){
+					this.sprite.draw(canvas, gegnerRX[l], gegnerRY[l]);
 				}
 			}
+		 };
+		 
+		 gegnerKaefer.draw = function () {
+			if(/*activeEnemys > 0 && */isNaN(gegnerKX[0]) == false){
+				for(var l = 0; l <= gegnerKX.length; l++){
+					this.sprite.draw(canvas, gegnerKX[l], gegnerKY[l]);
+				}
+			}
+		 };
+		 
+		 gegnerDoktor.draw = function () {
+			if(/*activeEnemys > 0 && */isNaN(gegnerDX[0]) == false){
+				for(var l = 0; l <= gegnerDX.length; l++){
+					this.sprite.draw(canvas, gegnerDX[l], gegnerDY[l]);
+					hitKugel1Doktor(l);
+				}
+			}
+		 };
+		 
+		 bossgegner.draw = function(){
+			 if(bossActive == true){
+				 this.sprite.draw(canvas, endbossX, endbossY);
+			 }
 		 };
 		
 </script>

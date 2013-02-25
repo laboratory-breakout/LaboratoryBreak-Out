@@ -2,6 +2,12 @@
 function intro(){
 	MediaElement('intro_player', {success: function(video) {
 		video.play();
+		document.getElementById('skip_button')['onclick'] = function() {
+			video.pause();
+			document.getElementById("intro").style.display="none";
+			document.getElementById("spiel").style.display="block";
+			startLevelEins();
+		}
 		video.addEventListener('ended', function() {
 			document.getElementById("intro").style.display="none";
 			document.getElementById("spiel").style.display="block";
